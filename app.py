@@ -31,26 +31,20 @@ def set_background():
 
 set_background()
 
-# ========== Load Data ==========
+# ========== Load Data and Models ==========
 df = pd.read_csv("merged_data.csv")
+model_lr = joblib.load("lr_model.pkl")
+model_knn = joblib.load("knn_model.pkl")
+scaler = joblib.load("scaler.pkl")
+feature_names = joblib.load("feature_names.pkl")  # Ensure this file exists and matches your model
 
-# ========== Load Models and Assets ==========
-@st.cache_resource
-def load_assets():
-    model_lr = joblib.load("lr_model.pkl")
-    model_knn = joblib.load("knn_model.pkl")
-    scaler = joblib.load("scaler.pkl")
-    feature_names = joblib.load("feature_names.pkl")
-    return model_lr, model_knn, scaler, feature_names
-
-model_lr, model_knn, scaler, feature_names = load_assets()
-
-# ========== Load Lottie Animations ==========
+# ========== Lottie Animations ==========
 lottie_home = load_lottie("animation_home.json")
 lottie_eda = load_lottie("animation_eda.json")
 lottie_predict = load_lottie("animation_predict.json")
+lottie_data = load_lottie("animation_data.json")  # NEW animation
 
-# ========== Preprocess Data ==========
+# ========== Preprocess ==========
 if {'year', 'month', 'day', 'hour'}.issubset(df.columns):
     df['datetime'] = pd.to_datetime(df[['year', 'month', 'day', 'hour']])
 
@@ -58,6 +52,7 @@ if {'year', 'month', 'day', 'hour'}.issubset(df.columns):
 st.sidebar.title("🌍 Air Quality App")
 menu = st.sidebar.radio("Navigate", ["🏠 Home", "📊 Data Overview", "📈 EDA", "🤖 Predict"])
 st.sidebar.markdown("---")
+st.sidebar.write("Built with ❤️ using Streamlit")
 
 # ========== Home ==========
 if menu == "🏠 Home":
@@ -67,38 +62,40 @@ if menu == "🏠 Home":
     st.markdown("""
     Welcome to the Air Quality Prediction App! This tool predicts **PM2.5** concentration levels based on environmental features.
 
-    ### 📌 About the Monitoring Stations:
+    ### 📌 Station Profiles:
 
     - **🏙️ Aotizhongxin**
-      - Located in Beijing's Olympic Sports Center area.
-      - High population density and heavy traffic contribute to significant pollution levels.
-      - Seasonal variation due to heating and construction activities.
+        - Central urban district with dense traffic.
+        - High pollution from vehicles and industry.
+        - Frequent smog events, especially in winter.
 
     - **🌄 Changping**
-      - Northern suburban district of Beijing.
-      - Pollution levels vary with industrial emissions and regional wind patterns.
-      - Nearby hills can trap pollutants during temperature inversions.
+        - Located in Beijing's north suburbs.
+        - Pollution varies with wind and industrial activity.
+        - Lower average PM2.5 than central stations.
 
     - **🏘️ Dongsi**
-      - A dense residential and commercial zone in downtown Beijing.
-      - Experiences frequent PM2.5 spikes from vehicle emissions and local street activity.
-      - Narrow streets reduce natural dispersion of pollutants.
+        - Mixed-use residential and commercial zone.
+        - High vehicle flow, especially during rush hours.
+        - PM2.5 peaks during weekdays.
 
     - **🏛️ Guanyuan**
-      - Government district with administrative offices and open spaces.
-      - Typically records cleaner air due to fewer traffic sources and strict regulations.
-      - Serves as a useful reference for comparing central vs peripheral zones.
+        - Administrative center near government buildings.
+        - Better regulation and lower industrial emissions.
+        - Cleaner air, often used as a benchmark.
 
-    ### 🚀 App Features:
-    - Explore and visualize air quality data.
-    - Perform predictions using Linear Regression or KNN models.
-    - Gain insights through interactive EDA plots.
+    ### 🚀 Features:
+    - View raw and processed data.
+    - Analyze PM2.5 trends and patterns.
+    - Predict PM2.5 with ML models (LR & KNN).
     """)
     st.caption(f"🕒 Last updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 
 # ========== Data Overview ==========
 elif menu == "📊 Data Overview":
     st.title("📊 Dataset Overview")
+    st_lottie(lottie_data, height=200)
+
     st.dataframe(df.head(10))
     st.markdown(f"**Shape:** `{df.shape}`")
     st.markdown("### Missing Values")
@@ -113,7 +110,9 @@ elif menu == "📈 EDA":
 
     plot_option = st.selectbox("Choose a plot", [
         "PM2.5 Distribution", "Correlation Heatmap", "PM2.5 vs Temperature",
-        "Boxplot of PM2.5 by Month", "Trend Over Time"])
+        "Boxplot of PM2.5 by Month", "Trend Over Time",
+        "Monthly Average PM2.5", "PM2.5 vs Wind Speed",
+        "Hourly PM2.5 Pattern", "Yearly PM2.5 Trend", "Pairplot of Pollutants"])
 
     if plot_option == "PM2.5 Distribution":
         fig, ax = plt.subplots()
@@ -143,6 +142,39 @@ elif menu == "📈 EDA":
         ax.set_title("PM2.5 Trend Over Time")
         st.pyplot(fig)
 
+    elif plot_option == "Monthly Average PM2.5":
+        monthly_avg = df.groupby("month")["PM2.5"].mean()
+        fig, ax = plt.subplots()
+        ax.plot(monthly_avg.index, monthly_avg.values, marker='o')
+        ax.set_title("Average PM2.5 by Month")
+        st.pyplot(fig)
+
+    elif plot_option == "PM2.5 vs Wind Speed":
+        fig, ax = plt.subplots()
+        sns.scatterplot(x='WSPM', y='PM2.5', data=df, alpha=0.5, ax=ax)
+        ax.set_title("PM2.5 vs Wind Speed")
+        st.pyplot(fig)
+
+    elif plot_option == "Hourly PM2.5 Pattern":
+        hourly_avg = df.groupby("hour")["PM2.5"].mean()
+        fig, ax = plt.subplots()
+        ax.plot(hourly_avg.index, hourly_avg.values, marker='o')
+        ax.set_title("Hourly PM2.5 Pattern")
+        st.pyplot(fig)
+
+    elif plot_option == "Yearly PM2.5 Trend":
+        if 'year' in df.columns:
+            yearly_avg = df.groupby("year")["PM2.5"].mean()
+            fig, ax = plt.subplots()
+            ax.plot(yearly_avg.index, yearly_avg.values, marker='o')
+            ax.set_title("Yearly PM2.5 Trend")
+            st.pyplot(fig)
+
+    elif plot_option == "Pairplot of Pollutants":
+        selected = ['PM2.5', 'PM10', 'SO2', 'NO2', 'CO', 'O3']
+        fig = sns.pairplot(df[selected].dropna())
+        st.pyplot(fig)
+
 # ========== Prediction ==========
 elif menu == "🤖 Predict":
     st.title("🤖 PM2.5 Prediction")
@@ -157,13 +189,13 @@ elif menu == "🤖 Predict":
         with cols[i % 2]:
             default = 2020.0 if feat == 'year' else 1.0 if feat in ['month', 'day', 'hour'] else 50.0
             step = 1.0 if feat in ['year', 'month', 'day', 'hour'] else 0.1
-            user_input[feat] = st.number_input(feat, value=default, step=step)
+            user_input[feat] = st.number_input(feat, value=default, step=step, format="%.2f")
 
     if st.button("🔍 Predict"):
         try:
-            X_ordered = np.array([[user_input[feat] for feat in feature_names]])
-            X_scaled = scaler.transform(X_ordered)
-            pred = model_lr.predict(X_scaled)[0] if model_choice == "Linear Regression" else model_knn.predict(X_scaled)[0]
+            input_data = pd.DataFrame([user_input])[feature_names]
+            input_scaled = scaler.transform(input_data)
+            pred = model_lr.predict(input_scaled)[0] if model_choice == "Linear Regression" else model_knn.predict(input_scaled)[0]
             st.success(f"🌫️ Predicted PM2.5: **{pred:.2f} μg/m³**")
         except Exception as e:
             st.error(f"❌ Prediction failed: {e}")
