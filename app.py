@@ -8,6 +8,9 @@ from streamlit_lottie import st_lottie
 import json
 from datetime import datetime
 
+# ========== MUST BE FIRST ==========
+st.set_page_config(page_title="Air Quality App", layout="wide")
+
 # ========== Functions ==========
 def load_lottie(filepath):
     with open(filepath, "r") as f:
@@ -29,9 +32,7 @@ def set_background():
         </style>
     """, unsafe_allow_html=True)
 
-# ========== App Setup ==========
 set_background()
-st.set_page_config(page_title="Air Quality App", layout="wide")
 
 # ========== Load Data and Models ==========
 df = pd.read_csv("merged_data.csv")
@@ -44,7 +45,7 @@ lottie_home = load_lottie("animation_home.json")
 lottie_eda = load_lottie("animation_eda.json")
 lottie_predict = load_lottie("animation_predict.json")
 
-# ========== Prepare datetime ==========
+# Add datetime column
 if {'year', 'month', 'day', 'hour'}.issubset(df.columns):
     df['datetime'] = pd.to_datetime(df[['year', 'month', 'day', 'hour']])
 
@@ -57,9 +58,8 @@ st.sidebar.markdown("---")
 if menu == "🏠 Home":
     st.title("Air Quality Prediction Dashboard")
     st_lottie(lottie_home, height=300)
-
     st.markdown("""
-    Welcome to the Air Quality Prediction App! This tool predicts **PM2.5** concentration levels based on environmental features.
+    Welcome to the **Air Quality Prediction App**! This tool predicts **PM2.5** concentration levels based on various environmental features.
 
     ### 📌 About the Stations:
     - **Aotizhongxin**: Urban center, often experiences moderate to high pollution.
@@ -121,7 +121,7 @@ elif menu == "📈 EDA":
         ax.set_title("PM2.5 Trend Over Time")
         st.pyplot(fig)
 
-# ========== Predict ==========
+# ========== Prediction ==========
 elif menu == "🤖 Predict":
     st.title("🤖 PM2.5 Prediction")
     st_lottie(lottie_predict, height=200)
@@ -129,7 +129,7 @@ elif menu == "🤖 Predict":
     st.subheader("Select Model")
     model_choice = st.radio("Choose model", ["Linear Regression", "KNN"])
 
-    # Feature list hardcoded in training order
+    # Match the training feature order
     features = ['PM10', 'SO2', 'NO2', 'CO', 'O3',
                 'TEMP', 'PRES', 'DEWP', 'RAIN', 'WSPM',
                 'year', 'month', 'day', 'hour']
@@ -140,11 +140,12 @@ elif menu == "🤖 Predict":
         with cols[i % 2]:
             default = 2020 if feat == 'year' else 1 if feat in ['month', 'day', 'hour'] else 50.0
             step = 1 if feat in ['year', 'month', 'day', 'hour'] else 0.1
-            user_input[feat] = st.number_input(feat, value=default, step=step)
+            user_input[feat] = st.number_input(feat, value=default, step=step, format="%.2f")
 
     if st.button("🔍 Predict"):
         try:
-            X_input = pd.DataFrame([[user_input[feat] for feat in features]], columns=features)
+            input_df = pd.DataFrame([user_input])
+            X_input = input_df[features]  # Ensures column order
             X_scaled = scaler.transform(X_input)
 
             if model_choice == "Linear Regression":
