@@ -140,20 +140,16 @@ elif menu == "🤖 Predict":
             user_input[feat] = st.number_input(feat, value=default, step=step)
 
     if st.button("🔍 Predict"):
-    try:
-        input_df = pd.DataFrame([user_input])
-        
-        # Ensure correct order and columns
-        X_input = input_df[features]
-        X_scaled = scaler.transform(X_input)
+        try:
+            input_df = pd.DataFrame([user_input])
+            X_input = input_df[features]
+            X_scaled = scaler.transform(X_input)
 
-        # Model selection
-        if model_choice == "Linear Regression":
-            pred = model_lr.predict(X_scaled)[0]
-        else:
-            pred = model_knn.predict(X_scaled)[0]
-        
-        st.success(f"🌫️ Predicted PM2.5: **{pred:.2f} μg/m³**")
-    except Exception as e:
-        st.error(f"❌ Prediction failed: {e}")
+            if model_choice == "Linear Regression":
+                pred = model_lr.predict(X_scaled)[0]
+            else:
+                pred = model_knn.predict(X_scaled)[0]
 
+            st.success(f"🌫️ Predicted PM2.5: **{pred:.2f} μg/m³**")
+        except Exception as e:
+            st.error(f"❌ Prediction failed: {e}")
