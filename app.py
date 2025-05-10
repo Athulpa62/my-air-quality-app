@@ -144,8 +144,7 @@ elif menu == "🤖 Predict":
 
     if st.button("🔍 Predict"):
         try:
-            input_df = pd.DataFrame([user_input])
-            X_input = input_df[features]
+            X_input = pd.DataFrame([[user_input[feat] for feat in features]], columns=features)
             X_scaled = scaler.transform(X_input)
 
             if model_choice == "Linear Regression":
