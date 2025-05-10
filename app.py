@@ -29,7 +29,9 @@ def set_background():
         </style>
     """, unsafe_allow_html=True)
 
+# ========== App Setup ==========
 set_background()
+st.set_page_config(page_title="Air Quality App", layout="wide")
 
 # ========== Load Data and Models ==========
 df = pd.read_csv("merged_data.csv")
@@ -42,7 +44,7 @@ lottie_home = load_lottie("animation_home.json")
 lottie_eda = load_lottie("animation_eda.json")
 lottie_predict = load_lottie("animation_predict.json")
 
-# Create datetime if not already
+# ========== Prepare datetime ==========
 if {'year', 'month', 'day', 'hour'}.issubset(df.columns):
     df['datetime'] = pd.to_datetime(df[['year', 'month', 'day', 'hour']])
 
@@ -119,7 +121,7 @@ elif menu == "📈 EDA":
         ax.set_title("PM2.5 Trend Over Time")
         st.pyplot(fig)
 
-# ========== Prediction ==========
+# ========== Predict ==========
 elif menu == "🤖 Predict":
     st.title("🤖 PM2.5 Prediction")
     st_lottie(lottie_predict, height=200)
