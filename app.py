@@ -58,7 +58,6 @@ if {'year', 'month', 'day', 'hour'}.issubset(df.columns):
 st.sidebar.title("🌍 Air Quality App")
 menu = st.sidebar.radio("Navigate", ["🏠 Home", "📊 Data Overview", "📈 EDA", "🤖 Predict"])
 st.sidebar.markdown("---")
-st.sidebar.write("Built with ❤️ using Streamlit")
 
 # ========== Home ==========
 if menu == "🏠 Home":
@@ -139,8 +138,8 @@ elif menu == "🤖 Predict":
     cols = st.columns(2)
     for i, feat in enumerate(feature_names):
         with cols[i % 2]:
-            default = 2020 if feat == 'year' else 1 if feat in ['month', 'day', 'hour'] else 50.0
-            step = 1 if feat in ['year', 'month', 'day', 'hour'] else 0.1
+            default = 2020.0 if feat == 'year' else 1.0 if feat in ['month', 'day', 'hour'] else 50.0
+            step = 1.0 if feat in ['year', 'month', 'day', 'hour'] else 0.1
             user_input[feat] = st.number_input(feat, value=default, step=step)
 
     if st.button("🔍 Predict"):
