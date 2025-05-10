@@ -21,14 +21,22 @@ def set_background():
             }
             .sidebar .sidebar-content {
                 background-color: #e3f2fd;
+                padding: 1rem;
             }
             .stButton>button {
                 background-color: #4caf50;
                 color: white;
             }
+            .stRadio > div {
+                gap: 0.5rem;
+            }
+            .stImage > img {
+                margin-bottom: 10px;
+            }
         </style>
     """, unsafe_allow_html=True)
 
+# ========== Setup ==========
 set_background()
 
 # ========== Load Data and Models ==========
@@ -36,25 +44,34 @@ df = pd.read_csv("merged_data.csv")
 model_lr = joblib.load("lr_model.pkl")
 model_knn = joblib.load("knn_model.pkl")
 scaler = joblib.load("scaler.pkl")
-feature_names = joblib.load("feature_names.pkl")  # Ensure this file exists and matches your model
+feature_names = joblib.load("feature_names.pkl")
 
 # ========== Lottie Animations ==========
 lottie_home = load_lottie("animation_home.json")
 lottie_eda = load_lottie("animation_eda.json")
 lottie_predict = load_lottie("animation_predict.json")
-lottie_data = load_lottie("animation_data.json")  # NEW animation
+lottie_data = load_lottie("animation_data.json")
+lottie_sidebar = load_lottie("animation_sidebar.json")  # NEW sidebar animation
 
 # ========== Preprocess ==========
 if {'year', 'month', 'day', 'hour'}.issubset(df.columns):
     df['datetime'] = pd.to_datetime(df[['year', 'month', 'day', 'hour']])
 
 # ========== Sidebar ==========
-st.sidebar.title("🌍 Air Quality App")
-menu = st.sidebar.radio("Navigate", ["🏠 Home", "📊 Data Overview", "📈 EDA", "🤖 Predict"])
-st.sidebar.markdown("---")
-st.sidebar.write("Built with ❤️ using Streamlit")
+with st.sidebar:
+    st_lottie(lottie_sidebar, height=150)
 
-# ========== Home ==========
+    st.title("🌍 Air Quality App")
+    menu = st.radio("📂 Navigate", ["🏠 Home", "📊 Data Overview", "📈 EDA", "🤖 Predict"])
+
+    with st.expander("ℹ️ About"):
+        st.write("Visualize air quality and predict PM2.5 using machine learning models.")
+
+    st.markdown(f"🕒 **{datetime.now().strftime('%A, %B %d, %Y – %H:%M:%S')}**")
+    st.markdown("---")
+    st.write("Built with ❤️ using Streamlit")
+
+# ========== Pages ==========
 if menu == "🏠 Home":
     st.title("Air Quality Prediction Dashboard")
     st_lottie(lottie_home, height=300)
@@ -91,7 +108,6 @@ if menu == "🏠 Home":
     """)
     st.caption(f"🕒 Last updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 
-# ========== Data Overview ==========
 elif menu == "📊 Data Overview":
     st.title("📊 Dataset Overview")
     st_lottie(lottie_data, height=200)
@@ -103,7 +119,6 @@ elif menu == "📊 Data Overview":
     st.markdown("### Data Types")
     st.write(df.dtypes)
 
-# ========== EDA ==========
 elif menu == "📈 EDA":
     st.title("📈 Exploratory Data Analysis")
     st_lottie(lottie_eda, height=200)
@@ -175,7 +190,6 @@ elif menu == "📈 EDA":
         fig = sns.pairplot(df[selected].dropna())
         st.pyplot(fig)
 
-# ========== Prediction ==========
 elif menu == "🤖 Predict":
     st.title("🤖 PM2.5 Prediction")
     st_lottie(lottie_predict, height=200)
