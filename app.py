@@ -69,7 +69,6 @@ with st.sidebar:
 
     st.markdown(f"🕒 **{datetime.now().strftime('%A, %B %d, %Y – %H:%M:%S')}**")
     st.markdown("---")
-    st.write("Built with ❤️ using Streamlit")
 
 # ========== Pages ==========
 if menu == "🏠 Home":
