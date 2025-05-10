@@ -50,7 +50,6 @@ if {'year', 'month', 'day', 'hour'}.issubset(df.columns):
 st.sidebar.title("🌍 Air Quality App")
 menu = st.sidebar.radio("Navigate", ["🏠 Home", "📊 Data Overview", "📈 EDA", "🤖 Predict"])
 st.sidebar.markdown("---")
-st.sidebar.write("Built with ❤️ using Streamlit")
 
 # ========== Home ==========
 if menu == "🏠 Home":
