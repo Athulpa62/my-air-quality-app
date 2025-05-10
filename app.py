@@ -55,6 +55,7 @@ st.sidebar.markdown("---")
 if menu == "🏠 Home":
     st.title("Air Quality Prediction Dashboard")
     st_lottie(lottie_home, height=300)
+
     st.markdown("""
     Welcome to the Air Quality Prediction App! This tool predicts **PM2.5** concentration levels based on environmental features.
 
@@ -126,9 +127,14 @@ elif menu == "🤖 Predict":
     st.subheader("Select Model")
     model_choice = st.radio("Choose model", ["Linear Regression", "KNN"])
 
+    # Feature list hardcoded in training order
+    features = ['PM10', 'SO2', 'NO2', 'CO', 'O3',
+                'TEMP', 'PRES', 'DEWP', 'RAIN', 'WSPM',
+                'year', 'month', 'day', 'hour']
+
     user_input = {}
     cols = st.columns(2)
-    for i, feat in enumerate(feature_names):
+    for i, feat in enumerate(features):
         with cols[i % 2]:
             default = 2020 if feat == 'year' else 1 if feat in ['month', 'day', 'hour'] else 50.0
             step = 1 if feat in ['year', 'month', 'day', 'hour'] else 0.1
@@ -137,7 +143,7 @@ elif menu == "🤖 Predict":
     if st.button("🔍 Predict"):
         try:
             input_df = pd.DataFrame([user_input])
-            X_input = input_df[feature_names]
+            X_input = input_df[features]
             X_scaled = scaler.transform(X_input)
 
             if model_choice == "Linear Regression":
