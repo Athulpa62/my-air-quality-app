@@ -34,16 +34,16 @@ set_background()
 # ========== Load Data ==========
 df = pd.read_csv("merged_data.csv")
 
-# ========== Load Models, Scaler, and Features ==========
+# ========== Load Models and Assets ==========
 @st.cache_resource
-def load_models():
+def load_assets():
     model_lr = joblib.load("lr_model.pkl")
     model_knn = joblib.load("knn_model.pkl")
     scaler = joblib.load("scaler.pkl")
     feature_names = joblib.load("feature_names.pkl")
     return model_lr, model_knn, scaler, feature_names
 
-model_lr, model_knn, scaler, feature_names = load_models()
+model_lr, model_knn, scaler, feature_names = load_assets()
 
 # ========== Load Lottie Animations ==========
 lottie_home = load_lottie("animation_home.json")
@@ -58,24 +58,42 @@ if {'year', 'month', 'day', 'hour'}.issubset(df.columns):
 st.sidebar.title("🌍 Air Quality App")
 menu = st.sidebar.radio("Navigate", ["🏠 Home", "📊 Data Overview", "📈 EDA", "🤖 Predict"])
 st.sidebar.markdown("---")
+st.sidebar.write("Built with ❤️ using Streamlit")
 
 # ========== Home ==========
 if menu == "🏠 Home":
     st.title("Air Quality Prediction Dashboard")
     st_lottie(lottie_home, height=300)
+
     st.markdown("""
     Welcome to the Air Quality Prediction App! This tool predicts **PM2.5** concentration levels based on environmental features.
 
-    ### 📌 About the Stations:
-    - **Aotizhongxin**: Urban center, often experiences moderate to high pollution.
-    - **Changping**: Suburban area with varying pollution based on wind and industrial activity.
-    - **Dongsi**: Residential + commercial mix, sees peak traffic-related pollution.
-    - **Guanyuan**: Near administrative zones, generally lower emission levels.
+    ### 📌 About the Monitoring Stations:
+
+    - **🏙️ Aotizhongxin**
+      - Located in Beijing's Olympic Sports Center area.
+      - High population density and heavy traffic contribute to significant pollution levels.
+      - Seasonal variation due to heating and construction activities.
+
+    - **🌄 Changping**
+      - Northern suburban district of Beijing.
+      - Pollution levels vary with industrial emissions and regional wind patterns.
+      - Nearby hills can trap pollutants during temperature inversions.
+
+    - **🏘️ Dongsi**
+      - A dense residential and commercial zone in downtown Beijing.
+      - Experiences frequent PM2.5 spikes from vehicle emissions and local street activity.
+      - Narrow streets reduce natural dispersion of pollutants.
+
+    - **🏛️ Guanyuan**
+      - Government district with administrative offices and open spaces.
+      - Typically records cleaner air due to fewer traffic sources and strict regulations.
+      - Serves as a useful reference for comparing central vs peripheral zones.
 
     ### 🚀 App Features:
-    - Explore air quality data.
-    - Run Linear Regression or KNN predictions.
-    - Understand trends via interactive EDA.
+    - Explore and visualize air quality data.
+    - Perform predictions using Linear Regression or KNN models.
+    - Gain insights through interactive EDA plots.
     """)
     st.caption(f"🕒 Last updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 
@@ -126,7 +144,7 @@ elif menu == "📈 EDA":
         ax.set_title("PM2.5 Trend Over Time")
         st.pyplot(fig)
 
-# ========== Predict ==========
+# ========== Prediction ==========
 elif menu == "🤖 Predict":
     st.title("🤖 PM2.5 Prediction")
     st_lottie(lottie_predict, height=200)
