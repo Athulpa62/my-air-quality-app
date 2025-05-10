@@ -144,11 +144,10 @@ elif menu == "🤖 Predict":
         input_df = pd.DataFrame([user_input])
         
         # Ensure correct order and columns
-        X_input = input_df[features]  # already defined earlier in the script
-        
-        # Use the same columns and order as used during training
+        X_input = input_df[features]
         X_scaled = scaler.transform(X_input)
 
+        # Model selection
         if model_choice == "Linear Regression":
             pred = model_lr.predict(X_scaled)[0]
         else:
