@@ -36,7 +36,6 @@ df = pd.read_csv("merged_data.csv")
 model_lr = joblib.load("lr_model.pkl")
 model_knn = joblib.load("knn_model.pkl")
 scaler = joblib.load("scaler.pkl")
-feature_names = joblib.load("feature_names.pkl")  # Load saved feature names
 
 # ========== Lottie Animations ==========
 lottie_home = load_lottie("animation_home.json")
