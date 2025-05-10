@@ -51,7 +51,7 @@ lottie_home = load_lottie("animation_home.json")
 lottie_eda = load_lottie("animation_eda.json")
 lottie_predict = load_lottie("animation_predict.json")
 lottie_data = load_lottie("animation_data.json")
-lottie_sidebar = load_lottie("animation_sidebar.json")  # NEW sidebar animation
+lottie_sidebar = load_lottie("animation_sidebar.json") 
 
 # ========== Preprocess ==========
 if {'year', 'month', 'day', 'hour'}.issubset(df.columns):
