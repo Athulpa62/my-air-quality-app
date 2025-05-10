@@ -67,7 +67,6 @@ with st.sidebar:
     with st.expander("ℹ️ About"):
         st.write("Visualize air quality and predict PM2.5 using machine learning models.")
 
-    st.markdown(f"🕒 **{datetime.now().strftime('%A, %B %d, %Y – %H:%M:%S')}**")
     st.markdown("---")
 
 # ========== Pages ==========
