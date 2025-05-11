@@ -81,7 +81,7 @@ with st.sidebar:
     - 📈 Perform Exploratory Data Analysis (EDA).
     - 🤖 Predict PM2.5 using machine learning models.
 
-
+""")
     st.markdown("---")
 
 # ========== Pages ==========
