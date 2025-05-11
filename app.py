@@ -77,30 +77,25 @@ if menu == "🏠 Home":
     st.markdown("""
     Welcome to the Air Quality Prediction App! This tool predicts **PM2.5** concentration levels based on environmental features.
 
-   ### 📌 Station Profiles:
+    ### 📌 Station Profiles:
 
-- **🏘️ Dongsi (Urban)**  
-    Situated in downtown Beijing, this station indicates air quality in urban and highly congested areas.  
-    It helps in assessing pollution from autos, residential heating, and daily human activities.
+    - <span style="color:#2e7d32; font-size:18px;"><strong>🏘️ Dongsi (Urban)</strong></span>  
+      Situated in downtown Beijing, this station indicates air quality in urban and highly congested areas.  
+      It helps in assessing pollution from autos, residential heating, and daily human activities.
 
-- **🌄 Changping (Suburban)**  
-    Situated in an in-between location between the urban center and suburbs, Changping measures pollution dispersion from the city center and suburban emissions.  
-    It helps in assessing how urban pollution disperses and how suburban expansion influences air quality.
+    - <span style="color:#1565c0; font-size:18px;"><strong>🌄 Changping (Suburban)</strong></span>  
+      Situated in an in-between location between the urban center and suburbs, Changping measures pollution dispersion from the city center and suburban emissions.  
+      It helps in assessing how urban pollution disperses and how suburban expansion influences air quality.
 
-- **🌿 Huairou (Rural)**  
-    Located in a less industrialized region with lower population density, this station provides a baseline of background air quality.  
-    Theoretical for measuring natural vs. anthropogenic (human-created) pollution.
+    - <span style="color:#2e7d32; font-size:18px;"><strong>🌿 Huairou (Rural)</strong></span>  
+      Located in a less industrialized region with lower population density, this station provides a baseline of background air quality.  
+      Theoretical for measuring natural vs. anthropogenic pollution.
 
-- **🏭 Aotizhongxin (Industrial)**  
-    Located near industrial regions, this station measures emission from factories, power plants, and heavy industry.  
-    Theoretical for monitoring industrial sources of pollution and their effect on surrounding areas.
-""")
+    - <span style="color:#c62828; font-size:18px;"><strong>🏭 Aotizhongxin (Industrial)</strong></span>  
+      Located near industrial regions, this station measures emission from factories, power plants, and heavy industry.  
+      Theoretical for monitoring industrial sources of pollution and their effect on surrounding areas.
+    """, unsafe_allow_html=True)
 
-    ### 🚀 Features:
-    - View raw and processed data.
-    - Analyze PM2.5 trends and patterns.
-    - Predict PM2.5 with ML models (LR & KNN).
-    """)
     st.caption(f"🕒 Last updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 
 elif menu == "📊 Data Overview":
