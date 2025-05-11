@@ -77,27 +77,24 @@ if menu == "🏠 Home":
     st.markdown("""
     Welcome to the Air Quality Prediction App! This tool predicts **PM2.5** concentration levels based on environmental features.
 
-    ### 📌 Station Profiles:
+   ### 📌 Station Profiles:
 
-    - **🏙️ Aotizhongxin**
-        - Central urban district with dense traffic.
-        - High pollution from vehicles and industry.
-        - Frequent smog events, especially in winter.
+- **🏘️ Dongsi (Urban)**  
+    Situated in downtown Beijing, this station indicates air quality in urban and highly congested areas.  
+    It helps in assessing pollution from autos, residential heating, and daily human activities.
 
-    - **🌄 Changping**
-        - Located in Beijing's north suburbs.
-        - Pollution varies with wind and industrial activity.
-        - Lower average PM2.5 than central stations.
+- **🌄 Changping (Suburban)**  
+    Situated in an in-between location between the urban center and suburbs, Changping measures pollution dispersion from the city center and suburban emissions.  
+    It helps in assessing how urban pollution disperses and how suburban expansion influences air quality.
 
-    - **🏘️ Dongsi**
-        - Mixed-use residential and commercial zone.
-        - High vehicle flow, especially during rush hours.
-        - PM2.5 peaks during weekdays.
+- **🌿 Huairou (Rural)**  
+    Located in a less industrialized region with lower population density, this station provides a baseline of background air quality.  
+    Theoretical for measuring natural vs. anthropogenic (human-created) pollution.
 
-    - **🏛️ Guanyuan**
-        - Administrative center near government buildings.
-        - Better regulation and lower industrial emissions.
-        - Cleaner air, often used as a benchmark.
+- **🏭 Aotizhongxin (Industrial)**  
+    Located near industrial regions, this station measures emission from factories, power plants, and heavy industry.  
+    Theoretical for monitoring industrial sources of pollution and their effect on surrounding areas.
+""")
 
     ### 🚀 Features:
     - View raw and processed data.
