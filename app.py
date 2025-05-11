@@ -75,28 +75,12 @@ with st.sidebar:
         st.markdown("""
         **Air Quality App**
 
-        This app visualizes and predicts air quality levels (**PM2.5 concentration**) across Beijing using historical meteorological and pollution data.
+    This application helps visualize and predict **PM2.5** air pollution levels using historical weather and pollutant data from Beijing.
 
-        **🔍 Features:**
-        - View air quality data and trends.
-        - Explore interactive visualizations.
-        - Predict PM2.5 levels using ML models.
+    - 📊 View data trends and patterns.
+    - 📈 Perform Exploratory Data Analysis (EDA).
+    - 🤖 Predict PM2.5 using machine learning models.
 
-        **📁 Data Source:**  
-        China National Environmental Monitoring Center (CNEMC)
-
-        **🧠 Models Used:**  
-        - Linear Regression  
-        - K-Nearest Neighbors (KNN)
-
-        **⚙️ Tech Stack:**  
-        - Streamlit  
-        - Scikit-learn  
-        - Pandas, Seaborn, Matplotlib
-
-        **🌐 Developed by:**  
-        Your Name / Team
-        """)
 
     st.markdown("---")
 
