@@ -33,6 +33,13 @@ def set_background():
             .stImage > img {
                 margin-bottom: 10px;
             }
+            h1, h2, h3 {
+                color: #0d47a1;
+            }
+            .stMarkdown h3 {
+                margin-top: 1.5em;
+                color: #1565c0;
+            }
         </style>
     """, unsafe_allow_html=True)
 
@@ -65,7 +72,31 @@ with st.sidebar:
     menu = st.radio("📂 Navigate", ["🏠 Home", "📊 Data Overview", "📈 EDA", "🤖 Predict"])
 
     with st.expander("ℹ️ About"):
-        st.write("Visualize air quality and predict PM2.5 using machine learning models.")
+        st.markdown("""
+        **Air Quality App**
+
+        This app visualizes and predicts air quality levels (**PM2.5 concentration**) across Beijing using historical meteorological and pollution data.
+
+        **🔍 Features:**
+        - View air quality data and trends.
+        - Explore interactive visualizations.
+        - Predict PM2.5 levels using ML models.
+
+        **📁 Data Source:**  
+        China National Environmental Monitoring Center (CNEMC)
+
+        **🧠 Models Used:**  
+        - Linear Regression  
+        - K-Nearest Neighbors (KNN)
+
+        **⚙️ Tech Stack:**  
+        - Streamlit  
+        - Scikit-learn  
+        - Pandas, Seaborn, Matplotlib
+
+        **🌐 Developed by:**  
+        Your Name / Team
+        """)
 
     st.markdown("---")
 
@@ -79,22 +110,22 @@ if menu == "🏠 Home":
 
     ### 📌 Station Profiles:
 
-    - <span style="color:#2e7d32; font-size:18px;"><strong>🏘️ Dongsi (Urban)</strong></span>  
-      Situated in downtown Beijing, this station indicates air quality in urban and highly congested areas.  
-      It helps in assessing pollution from autos, residential heating, and daily human activities.
+    #### 🏙️ Dongsi (Urban)
+    - Situated in downtown Beijing, this station indicates air quality in urban and highly congested areas.
+    - It helps in assessing pollution from autos, residential heating, and daily human activities.
 
-    - <span style="color:#1565c0; font-size:18px;"><strong>🌄 Changping (Suburban)</strong></span>  
-      Situated in an in-between location between the urban center and suburbs, Changping measures pollution dispersion from the city center and suburban emissions.  
-      It helps in assessing how urban pollution disperses and how suburban expansion influences air quality.
+    #### 🌄 Changping (Suburban)
+    - Located between the urban center and suburbs, Changping measures pollution dispersion from the city and suburban emissions.
+    - It helps in understanding how urban pollution spreads and how suburban growth influences air quality.
 
-    - <span style="color:#2e7d32; font-size:18px;"><strong>🌿 Huairou (Rural)</strong></span>  
-      Located in a less industrialized region with lower population density, this station provides a baseline of background air quality.  
-      Theoretical for measuring natural vs. anthropogenic pollution.
+    #### 🌾 Huairou (Rural)
+    - Located in a less industrialized region with lower population density.
+    - Serves as a baseline for background air quality and distinguishes natural vs. man-made pollution.
 
-    - <span style="color:#c62828; font-size:18px;"><strong>🏭 Aotizhongxin (Industrial)</strong></span>  
-      Located near industrial regions, this station measures emission from factories, power plants, and heavy industry.  
-      Theoretical for monitoring industrial sources of pollution and their effect on surrounding areas.
-    """, unsafe_allow_html=True)
+    #### 🏭 Aotizhongxin (Industrial)
+    - Located near factories and heavy industry.
+    - Measures industrial emissions and their effects on nearby air quality.
+    """)
 
     st.caption(f"🕒 Last updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 
